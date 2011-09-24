@@ -24,6 +24,8 @@ def main():
     # Set which folder things get sorted into
     if (platform.uname())[0]=="Windows":
         final=os.environ['USERPROFILE']+"\\My Documents\\Downloads\\"
+    if (platform.uname())[0]=="Darwin":
+        final="/Users/"+os.environ.get("USER")+"/Downloads/"
     else: final="/home/"+os.environ.get("USERNAME")+"/Downloads/"
     if not os.path.isdir(final): os.mkdir(final)
     # Put which folders you want sorted
@@ -41,7 +43,7 @@ def sort(dirs,final):
             os.rename(path+file, final+"dir/"+file)
         else: 
             to=final+grouping(file.rpartition(".")[2].lower())+file
-            if os.path.exists(to)==False: os.rename(path+file,to)
+            if not os.path.exists(to): os.rename(path+file,to)
 
 # Don't sort certain files like Desktop.ini
 def exclude(name):
