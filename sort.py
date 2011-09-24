@@ -32,7 +32,7 @@ def main():
         final=os.path.join("/home",os.environ.get("USERNAME"),"Downloads/")
 
     # Split all file extensions into lists of strings
-    for key in _organize.items:
+    for key in _organize:
         _organize[key]=_organize[key].strip().replace(' ','').split(",")
 
     if not os.path.isdir(final):
