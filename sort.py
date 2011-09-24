@@ -1,7 +1,7 @@
 # By Jimmy Ruska
 # Sorts Desktop and Downloads folder by extension.
 # Made for easy modification. Tested: Windows/Ubuntu Python 2.7, 3.2.
-# Beware, it will also move folders and program shortcuts.
+# Beware, it will also move folders and program Shortcuts.
 
 import os,re,platform
 _organize={
@@ -18,7 +18,7 @@ _organize={
     ,'other':     '*'
     ,'other/bt':   'torrent'
     ,'dir':       '/'
-}
+    }
 # conditions where sorting is avoided
 _ignore=[("re","^\."),("match","crdownload"),("exact","desktop.ini"),("exact","Downloads"),("re","\.part$")]
 
@@ -27,13 +27,11 @@ def main():
     OS=(platform.uname())[0]
     if   OS=="Windows":
         final=os.path.join(os.environ['USERPROFILE'],"My Documents/Downloads/")
-    elif OS=="Darwin":
-        final=os.path.join("/Users",os.environ.get("USER"),"Downloads/")
     else:
         final=os.path.join(os.environ.get("HOME"),"Downloads/")
 
     # Split all file extensions into lists of strings 'foo,bar' -> ['foo','bar']
-    for (key,val) in _organize.items():
+    for key,val in _organize.items():
         _organize[key]=val.strip().replace(' ','').split(",")
 
     if not os.path.isdir(final):
@@ -50,7 +48,7 @@ def sort(dirs,final):
         if not os.path.isdir(final+key):
             os.makedirs(final+key)
     #loop through and sort all directories
-    for (path,file) in sum([[(d,z) for z in os.listdir(d)] for d in dirs if os.path.exists(d)],[]): 
+    for path,file in sum([[(d,z) for z in os.listdir(d)] for d in dirs if os.path.exists(d)],[]):        
         if file in _organize or exclude(file):
             pass
         elif os.path.isdir(path+file) and not os.path.exists(final+"dir/"+file):
@@ -62,7 +60,7 @@ def sort(dirs,final):
 
 # Don't sort certain files like desktop.ini
 def exclude(name):
-    for (op,check) in _ignore:
+    for op,check in _ignore:
         if ((op=="re" and re.match(check,name))
             or (op=="match" and re.search(check,name))
             or (op=="exact" and check==name)):
