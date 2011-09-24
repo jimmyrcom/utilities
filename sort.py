@@ -32,14 +32,14 @@ def main():
     else:
         final=os.path.join("/home",os.environ.get("USERNAME"),"Downloads/")
 
-    # Split all file extensions into lists of strings
+    # Split all file extensions into lists of strings 'foo,bar' -> ['foo','bar']
     for (key,val) in _organize.items():
         _organize[key]=val.strip().replace(' ','').split(",")
 
     if not os.path.isdir(final):
         os.mkdir(final)
 
-    # Put which folders you want sorted
+    # Put which folders you want sorted. will ignore if doesn't exist
     sortTheseFolders = [final, final+"../../Desktop/", final+"../Desktop/"]
     sort(sortTheseFolders, final)
 
