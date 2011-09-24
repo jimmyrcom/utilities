@@ -32,8 +32,8 @@ def main():
         final=os.path.join("/home",os.environ.get("USERNAME"),"Downloads/")
 
     # Split all file extensions into lists of strings
-    for key in _organize:
-        _organize[key]=_organize[key].strip().replace(' ','').split(",")
+    for (key,val) in _organize.items():
+        _organize[key]=val.strip().replace(' ','').split(",")
 
     if not os.path.isdir(final):
         os.mkdir(final)
@@ -58,7 +58,7 @@ def sort(dirs,final):
             if not os.path.exists(to):
                 os.rename(path+file,to)
 
-# Don't sort certain files like desktop.ini
+# Don't sort certain files like Desktop.ini
 def exclude(name):
     for (op,check) in _ignore:
         if   op=="re" and re.match(check,name):
