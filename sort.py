@@ -18,45 +18,62 @@ _organize={'txt':       'txt,rtf,doc,xls,org,htm,html,odp,odt,pps,ppt,nfo,tex'
           ,'other/bt':   "torrent"
           ,'dir':       '/'
           }
+# conditions where sorting is avoided
 _ignore=[("re","^\."),("match","crdownload"),("exact","desktop.ini"),("exact","Downloads"),("re","\.part$")]
 
 def main():
     # Set which folder things get sorted into
-    if (platform.uname())[0]=="Windows":
-        final=os.environ['USERPROFILE']+"\\My Documents\\Downloads\\"
-    if (platform.uname())[0]=="Darwin":
-        final="/Users/"+os.environ.get("USER")+"/Downloads/"
-    else: final="/home/"+os.environ.get("USERNAME")+"/Downloads/"
-    if not os.path.isdir(final): os.mkdir(final)
+    OS=(platform.uname())[0]
+    if   OS=="Windows":
+        final=os.path.join(os.environ['USERPROFILE'],"My Documents/Downloads/")
+    elif OS=="Darwin":
+        final=os.path.join("/Users",os.environ.get("USER"),"Downloads/")
+    else:
+        final=os.path.join("/home",os.environ.get("USERNAME"),"Downloads/")
+
+    # Split all file extensions into lists of strings
+    for key in _organize:
+        _organize[key]=_organize[key].strip().replace(' ','').split(",")
+
+    if not os.path.isdir(final):
+        os.mkdir(final)
     # Put which folders you want sorted
-    sort([final,final+"..\\..\\Desktop\\","/home/"+os.environ.get("USERNAME")+"/Desktop/"], final)
+    sortTheseFolders = [final,final+"../../Desktop/","/home/"+os.environ.get("USERNAME")+"/Desktop/"]
+    sort(sortTheseFolders, final)
 
 # sort list of dirs into folder final
 def sort(dirs,final): 
     # make base directories if they don't exist
-    for key in _organize.keys():
-        if os.path.isdir(final+key)==False: os.makedirs(final+key)
+    for key in _organize:
+        if not os.path.isdir(final+key):
+            os.makedirs(final+key)
     #loop through and sort all directories
     for (path,file) in sum([[(d,z) for z in os.listdir(d)] for d in dirs if os.path.exists(d)],[]): 
-        if file in _organize or exclude(file): pass
-        elif os.path.isdir(path+file) and os.path.exists(final+"dir/"+file)==False:
+        if file in _organize or exclude(file):
+            pass
+        elif os.path.isdir(path+file) and not os.path.exists(final+"dir/"+file):
             os.rename(path+file, final+"dir/"+file)
         else: 
             to=final+grouping(file.rpartition(".")[2].lower())+file
-            if not os.path.exists(to): os.rename(path+file,to)
+            if not os.path.exists(to):
+                os.rename(path+file,to)
 
 # Don't sort certain files like Desktop.ini
 def exclude(name):
     for (op,check) in _ignore:
-        if   op=="re" and re.match(check,name)!=None: return True
-        elif op=="match" and re.search(check,name)!=None: return True
-        elif op=="exact" and check==name: return True
+        if   op=="re" and re.match(check,name):
+            return True
+        elif op=="match" and re.search(check,name):
+            return True
+        elif op=="exact" and check==name:
+            return True
     return False
 
 # Match file extensions to find group
 def grouping(ext):
     for folder,exts in _organize.items():
-        if exts.replace(' ','').split(",").count(ext)>0: return folder+"/"
+        if ext in exts:
+            return folder+"/"
     return "other/"
 
 if __name__ == '__main__':
