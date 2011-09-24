@@ -38,6 +38,7 @@ def main():
 
     if not os.path.isdir(final):
         os.mkdir(final)
+
     # Put which folders you want sorted
     sortTheseFolders = [final,final+"../../Desktop/","/home/"+os.environ.get("USERNAME")+"/Desktop/"]
     sort(sortTheseFolders, final)
@@ -62,13 +63,10 @@ def sort(dirs,final):
 # Don't sort certain files like desktop.ini
 def exclude(name):
     for (op,check) in _ignore:
-        if   op=="re" and re.match(check,name):
-            return True
-        elif op=="match" and re.search(check,name):
-            return True
-        elif op=="exact" and check==name:
-            return True
-    return False
+        if ((op=="re" and re.match(check,name))
+            or (op=="match" and re.search(check,name))
+            or (op=="exact" and check==name)):
+                 return True
 
 # Match file extensions to find group
 def grouping(ext):
