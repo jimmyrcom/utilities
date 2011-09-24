@@ -4,20 +4,21 @@
 # Beware, it will also move folders and program shortcuts.
 
 import os,re,platform
-_organize={'txt':       'txt,rtf,doc,xls,org,htm,html,odp,odt,pps,ppt,nfo,tex'
-          ,'txt/ebook': 'pdf,epub,chm,ps,djvu'
-          ,'images':    'png,gif,jpg,bmp,jpeg,tiff,ico,psd,xcf,svg,tga,ai'
-          ,'exe':       'exe,msi,lnk,swf,jar,jnlp,dll,com,bat,app,gadget'
-          ,'iso':       'iso,nrg,bin,cue,mds,ccd,udf,daa,uif,vcd'
-          ,'zip':       'zip,gz,tar,bz2,rar,ace,tgz,z,7z,deb,pls,m3u,sfv,pkg,dmg,rpm'
-          ,'audio':     'wav,mp3,midi,mid,wma,aac,ac3,faac,ape,m4a'
-          ,'video':     'mp4,mkv,ogg,mpg,mpeg,wmv,avi,m4v,flv,divx,ogv,mov,vob,rm,3gp'
-           ,'src':       'php,c,py,js,css,fla,lsp,erl,sh,hs,scm,d,go,pl,avs,ahk,as,fla,cpp,bash,hrl,h,java,m,ml'
-          ,'src/dat':   'log,sql,cnf,conf,patch,diff,ini,xml,cvs,cfg'
-          ,'other':     '*'
-          ,'other/bt':   "torrent"
-          ,'dir':       '/'
-          }
+_organize={
+    'txt':        'txt,rtf,doc,xls,org,htm,html,odp,odt,pps,ppt,nfo,tex'
+    ,'txt/ebook': 'pdf,epub,chm,ps,djvu'
+    ,'images':    'png,gif,jpg,bmp,jpeg,tiff,ico,psd,xcf,svg,tga,ai'
+    ,'exe':       'exe,msi,lnk,swf,jar,jnlp,dll,com,bat,app,gadget'
+    ,'iso':       'iso,nrg,bin,cue,mds,ccd,udf,daa,uif,vcd'
+    ,'zip':       'zip,gz,tar,bz2,rar,ace,tgz,z,7z,deb,pls,m3u,sfv,pkg,dmg,rpm'
+    ,'audio':     'wav,mp3,midi,mid,wma,aac,ac3,faac,ape,m4a'
+    ,'video':     'mp4,mkv,ogg,mpg,mpeg,wmv,avi,m4v,flv,divx,ogv,mov,vob,rm,3gp'
+    ,'src':       'php,c,py,js,css,fla,lsp,erl,sh,hs,scm,d,go,pl,avs,ahk,as,fla,cpp,bash,hrl,h,java,m,ml'
+    ,'src/dat':   'log,sql,cnf,conf,patch,diff,ini,xml,cvs,cfg'
+    ,'other':     '*'
+    ,'other/bt':   'torrent'
+    ,'dir':       '/'
+}
 # conditions where sorting is avoided
 _ignore=[("re","^\."),("match","crdownload"),("exact","desktop.ini"),("exact","Downloads"),("re","\.part$")]
 
@@ -58,7 +59,7 @@ def sort(dirs,final):
             if not os.path.exists(to):
                 os.rename(path+file,to)
 
-# Don't sort certain files like Desktop.ini
+# Don't sort certain files like desktop.ini
 def exclude(name):
     for (op,check) in _ignore:
         if   op=="re" and re.match(check,name):
