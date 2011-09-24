@@ -30,7 +30,7 @@ def main():
     elif OS=="Darwin":
         final=os.path.join("/Users",os.environ.get("USER"),"Downloads/")
     else:
-        final=os.path.join("/home",os.environ.get("USERNAME"),"Downloads/")
+        final=os.path.join(os.environ.get("HOME"),"Downloads/")
 
     # Split all file extensions into lists of strings 'foo,bar' -> ['foo','bar']
     for (key,val) in _organize.items():
