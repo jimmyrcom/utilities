@@ -40,7 +40,7 @@ def main():
         os.mkdir(final)
 
     # Put which folders you want sorted
-    sortTheseFolders = [final,final+"../../Desktop/","/home/"+os.environ.get("USERNAME")+"/Desktop/"]
+    sortTheseFolders = [final, final+"../../Desktop/", final+"../Desktop/"]
     sort(sortTheseFolders, final)
 
 # sort list of dirs into folder final
