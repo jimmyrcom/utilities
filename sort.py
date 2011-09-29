@@ -48,8 +48,10 @@ def main():
 def sort(dirs,final): 
     # make base directories if they don't exist
     for key in _organize:
-        if not os.path.isdir(final+key):
-            os.makedirs(final+key)
+        path = os.path.join(final, key)
+        if not os.path.isdir(path):
+            os.makedirs(path)
+
     #loop through and sort all directories
     for path,file in sum([[(d,z) for z in os.listdir(d)] for d in dirs if os.path.exists(d)],[]):        
         if file in _organize or exclude(file):
@@ -57,9 +59,14 @@ def sort(dirs,final):
         elif os.path.isdir(path+file) and not os.path.exists(final+"dir/"+file):
             os.rename(path+file, final+"dir/"+file)
         else: 
-            to=final+grouping(file.rpartition(".")[2].lower())+file
+            to = os.path.join(final, grouping(file.rpartition(".")[2].lower())+file)
             if not os.path.exists(to):
-                os.rename(path+file,to)
+                try:
+                    target = os.path.join(path, file)
+                    os.rename(target, to)
+                except OSError:
+                    print "unable to move file: %s to %s" % (target, to)
+                    raise
 
 # Don't sort certain files like desktop.ini
 def exclude(name):

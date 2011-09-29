@@ -21,7 +21,9 @@ class TestSort(object):
         self.organize, self.ignore = u_sort.read_config()  
         self.toreview = ['source1', 'source2',]        
         self.sorted = "sorted"
-        self.build_test_data()        
+        self.build_test_data()
+        u_sort._organize = self.organize
+        u_sort._ignore = self.ignore
         
     def build_test_data(self):
         os.mkdir(self.sorted)
