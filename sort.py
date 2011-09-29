@@ -28,13 +28,9 @@ def read_config():
     return organize_dict, ignore_list
 
 def main():
-    # Set which folder things get sorted into
-    OS=(platform.uname())[0]
-    if   OS=="Windows":
-        final=os.path.join(os.environ['USERPROFILE'],"My Documents/Downloads/")
-    else:
-        final=os.path.join(os.environ.get("HOME"),"Downloads/")
-
+    config = ConfigParser.ConfigParser()
+    config.read('sort.cfg')
+    final = config.get('dirs', 'sorted')    
     # Split all file extensions into lists of strings 'foo,bar' -> ['foo','bar']
     for key,val in _organize.items():
         _organize[key]=val.strip().replace(' ','').split(",")
@@ -43,8 +39,10 @@ def main():
         os.mkdir(final)
 
     # Put which folders you want sorted. will ignore if doesn't exist
-    sortTheseFolders = [final, final+"../../Desktop/", final+"../Desktop/"]
-    sort(sortTheseFolders, final)
+    sortTheseFolders = [os.path.abspath(os.path.join(final, p)) 
+                        for p in config.get('dirs', 'toreview').split(',')
+                        if os.path.exists(os.path.abspath(os.path.join(final, p)))]
+    #sort(sortTheseFolders, final)
 
 # sort list of dirs into folder final
 def sort(dirs,final): 
@@ -82,4 +80,4 @@ if __name__ == '__main__':
 
     _organize, _ignore = read_config()
     
-    #main()
+    main()
