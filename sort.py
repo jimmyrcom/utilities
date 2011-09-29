@@ -7,6 +7,7 @@ import ConfigParser
 import os
 import re
 
+cfg_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sort.cfg')
 _organize = dict()
 # conditions where sorting is avoided
 _ignore = list()
@@ -14,8 +15,8 @@ _ignore = list()
 def read_config():
     """ Get config data from cfg file.
     """
-    config = ConfigParser.ConfigParser()
-    config.read('sort.cfg')
+    config = ConfigParser.ConfigParser()    
+    config.read(cfg_path)
     organize_dict = dict()
     for k, v in config.items('organize'):
         organize_dict[k] = v
@@ -28,7 +29,7 @@ def read_config():
 
 def main():
     config = ConfigParser.ConfigParser()
-    config.read('sort.cfg')
+    config.read(cfg_path)
     final = config.get('dirs', 'sorted')    
     # Split all file extensions into lists of strings 'foo,bar' -> ['foo','bar']
     for key,val in _organize.items():
