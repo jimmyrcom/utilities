@@ -4,7 +4,6 @@
 # Beware, it will also move folders and program Shortcuts.
 
 import ConfigParser
-import platform
 import os
 import re
 
@@ -42,7 +41,7 @@ def main():
     sortTheseFolders = [os.path.abspath(os.path.join(final, p)) 
                         for p in config.get('dirs', 'toreview').split(',')
                         if os.path.exists(os.path.abspath(os.path.join(final, p)))]
-    #sort(sortTheseFolders, final)
+    sort(sortTheseFolders, final)
 
 # sort list of dirs into folder final
 def sort(dirs,final): 
