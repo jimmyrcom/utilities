@@ -3,24 +3,29 @@
 # Made for easy modification. Tested: Windows/Ubuntu Python 2.7, 3.2.
 # Beware, it will also move folders and program Shortcuts.
 
-import os,re,platform
-_organize={
-    'txt':        'txt,rtf,doc,xls,org,htm,html,odp,odt,pps,ppt,nfo,tex'
-    ,'txt/ebook': 'pdf,epub,chm,ps,djvu'
-    ,'images':    'png,gif,jpg,bmp,jpeg,tiff,ico,psd,xcf,svg,tga,ai'
-    ,'exe':       'exe,msi,lnk,swf,jar,jnlp,dll,com,bat,app,gadget'
-    ,'iso':       'iso,nrg,bin,cue,mds,ccd,udf,daa,uif,vcd'
-    ,'zip':       'zip,gz,tar,bz2,rar,ace,tgz,z,7z,deb,pls,m3u,sfv,pkg,dmg,rpm'
-    ,'audio':     'wav,mp3,midi,mid,wma,aac,ac3,faac,ape,m4a'
-    ,'video':     'mp4,mkv,ogg,mpg,mpeg,wmv,avi,m4v,flv,divx,ogv,mov,vob,rm,3gp'
-    ,'src':       'php,c,py,js,css,fla,lsp,erl,sh,hs,scm,d,go,pl,avs,ahk,as,fla,cpp,bash,hrl,h,java,m,ml'
-    ,'src/dat':   'log,sql,cnf,conf,patch,diff,ini,xml,cvs,cfg'
-    ,'other':     '*'
-    ,'other/bt':   'torrent'
-    ,'dir':       '/'
-    }
+import ConfigParser
+import platform
+import os
+import re
+
+_organize = dict()
 # conditions where sorting is avoided
-_ignore=[("re","^\."),("match","crdownload"),("exact","desktop.ini"),("exact","Downloads"),("re","\.part$")]
+_ignore = list()
+
+def read_config():
+    """ Get config data from cfg file.
+    """
+    config = ConfigParser.ConfigParser()
+    config.read('sort.cfg')
+    organize_dict = dict()
+    for k, v in config.items('organize'):
+        organize_dict[k] = v
+    ignore_list = list()
+    for k, v in config.items('ignore'):
+        for item in v.split(','):
+            token = (k, item)
+            ignore_list.append(token)
+    return organize_dict, ignore_list
 
 def main():
     # Set which folder things get sorted into
@@ -74,4 +79,7 @@ def grouping(ext):
     return "other/"
 
 if __name__ == '__main__':
-    main()
+
+    _organize, _ignore = read_config()
+    
+    #main()
