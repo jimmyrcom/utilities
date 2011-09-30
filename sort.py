@@ -16,6 +16,7 @@ class FileSorter(object):
     Beware, it will also move folders and program Shortcuts.
     
     Refactor, cleanup, and tests by Dave Kujawski
+    Note: changes only tested on Kubuntu.
     """
     def __init__(self):
         """ read the config file
@@ -52,13 +53,13 @@ class FileSorter(object):
                 """ skip anything that we are supposed to ignore
                 """
                 pass
-            elif os.path.isdir(target):
+            elif os.path.isdir(target) \
+            and not os.path.exists(os.path.join(self.dest, 'dir', file)):
                 """ if the target is a directory, move the directory only if it
                 has not already been moved.
                 """
-                final_dir = os.path.join(self.dest, dir, file)
-                if not os.path.exists(final_dir):
-                    os.rename(target, final_dir)
+                # TODO: tests do not cover this yet!
+                os.rename(target, os.path.join(self.dest, 'dir', file))
             else: 
                 ext = file.rpartition(".")[2].lower()
                 to = os.path.join(self.dest, self._grouping(ext), file)
