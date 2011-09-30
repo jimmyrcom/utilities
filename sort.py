@@ -53,15 +53,15 @@ def sort(dirs,final):
             os.makedirs(path)
 
     #loop through and sort all directories
-    for path,file in sum([[(d,z) for z in os.listdir(d)] for d in dirs if os.path.exists(d)],[]):        
+    for path,file in sum([[(d,z) for z in os.listdir(d)] for d in dirs],[]):        
+        target = os.path.join(path, file)
         if file in _organize or exclude(file):
             pass
-        elif os.path.isdir(path+file) and not os.path.exists(final+"dir/"+file):
-            os.rename(path+file, final+"dir/"+file)
+        elif os.path.isdir(target) and not os.path.exists(final+"dir/"+file):
+            os.rename(target, final+"dir/"+file)
         else: 
             to = os.path.join(final, grouping(file.rpartition(".")[2].lower())+file)
             if not os.path.exists(to):
-                target = os.path.join(path, file)
                 os.rename(target, to)
 
 # Don't sort certain files like desktop.ini
