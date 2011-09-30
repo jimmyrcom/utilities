@@ -61,12 +61,8 @@ def sort(dirs,final):
         else: 
             to = os.path.join(final, grouping(file.rpartition(".")[2].lower())+file)
             if not os.path.exists(to):
-                try:
-                    target = os.path.join(path, file)
-                    os.rename(target, to)
-                except OSError:
-                    print "unable to move file: %s to %s" % (target, to)
-                    raise
+                target = os.path.join(path, file)
+                os.rename(target, to)
 
 # Don't sort certain files like desktop.ini
 def exclude(name):
