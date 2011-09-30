@@ -18,7 +18,6 @@ class TestSort(object):
     def setup(self):
         """ setup some dirs and files for testing
         """
-        print "running setup.."
         self.step += 1
         stamp = datetime.datetime.now().strftime('%Y%m%d%H%M%s%f')
         config = ConfigParser.ConfigParser()
